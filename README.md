@@ -54,13 +54,15 @@ abstract class DbConnector extends Model
 class Info extends DbConnector
 {
     const TABLE_NAME = 'info';
+    protected string $tableName = self::TABLE_NAME;
     const IDENTIFY_TABLE_ID_COL_NAME = 'id';
+    protected string $identify_table_id_col_name = self::IDENTIFY_TABLE_ID_COL_NAME;
 
     public function Insert(int $id, string $name): void
     {
         $this->Add(
             [
-                'id'   => $id,
+                $this->identify_table_id_col_name   => $id,
                 'name' => $name,
             ]
         );

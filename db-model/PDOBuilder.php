@@ -57,7 +57,7 @@ abstract class PDOBuilder
 
             foreach ($colsValues as $col => $value) {
                 $setStatements[] = "`$col` = ?";
-                if (!empty($expectCols) && in_array($col, $expectCols)) {
+                if (!empty($expectCols) && in_array($col, $expectCols) || $col == 'description') {
                     $params[] = $value;
                 } else {
                     $params[] = self::handleHtmlTags($value);
@@ -84,7 +84,7 @@ abstract class PDOBuilder
 
             foreach ($colsValues as $col => $value) {
                 $cols[] = "`$col`";
-                if (!empty($expectCols) && in_array($col, $expectCols)) {
+                if (!empty($expectCols) && in_array($col, $expectCols) || $col == 'description') {
                     $params[] = $value;
                 } else {
                     $params[] = self::handleHtmlTags($value);

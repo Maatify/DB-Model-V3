@@ -42,7 +42,7 @@ abstract class Model extends PDOBuilder
     protected int $count = 0;
     protected string $class_name;
     protected int $row_id = 0;
-    protected const IDENTIFY_TABLE_ID_COL_NAME = 'id';
+    const IDENTIFY_TABLE_ID_COL_NAME = 'id';
     protected string $identify_table_id_col_name = self::IDENTIFY_TABLE_ID_COL_NAME;
     protected array $current_row;
 

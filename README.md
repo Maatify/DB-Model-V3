@@ -53,7 +53,8 @@ abstract class DbConnector extends Model
 
 class Info extends DbConnector
 {
-    protected string $tableName = 'info';
+    const TABLE_NAME = 'info';
+    const IDENTIFY_TABLE_ID_COL_NAME = 'id';
 
     public function Insert(int $id, string $name): void
     {

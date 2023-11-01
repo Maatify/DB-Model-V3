@@ -1,8 +1,8 @@
 <?php
 /**
  * @copyright   ©2023 Maatify.dev
- * @Liberary    DB-Model
- * @Project     DB-Model
+ * @Liberary    DB-Model-V3
+ * @Project     DB-Model-V3
  * @author      Mohamed Abdulalim (megyptm) <mohamed@maatify.dev>
  * @since       2023-05-21 4:17 PM
  * @see         https://www.maatify.dev Maatify.com
@@ -34,8 +34,6 @@ abstract class Model extends PDOBuilder
     protected PostValidatorV2 $postValidator;
     protected int $limit = 0;
     protected int|float $offset = 0;
-    protected int $id = 0;
-    protected int $admin_id = 0;
     protected int $pagination = 0;
     protected int $previous = 0;
 
@@ -49,9 +47,9 @@ abstract class Model extends PDOBuilder
     public function __construct()
     {
         $this->postValidator = PostValidatorV2::obj();
-        $page = max(((int)$this->postValidator->Optional('page', 'page') ? : 1), 1);
+        $page_no = max(((int)$this->postValidator->Optional('page_no', 'page_no') ? : 1), 1);
         $this->limit = max(((int)$this->postValidator->Optional('limit', 'limit') ? : 25), 1);
-        $this->pagination = $page - 1;
+        $this->pagination = $page_no - 1;
         if ($this->pagination > 0) {
             $this->previous = $this->pagination;
         }
@@ -86,11 +84,6 @@ abstract class Model extends PDOBuilder
     protected function PaginationPrevious(): int
     {
         return $this->previous;
-    }
-
-    protected function PostedID(): int
-    {
-        return $this->id = (int)$this->postValidator->Require($this->identify_table_id_col_name, 'int');
     }
 
     protected function ValidatePostedTableId(): int

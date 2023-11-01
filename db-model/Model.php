@@ -23,7 +23,7 @@
 namespace Maatify\Model;
 
 use Maatify\Json\Json;
-use Maatify\PostValidator\PostValidatorV2;
+use Maatify\PostValidatorV2\PostValidatorV2;
 use PDOException;
 use ReflectionClass;
 

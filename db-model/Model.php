@@ -186,6 +186,11 @@ abstract class Model extends PDOBuilder
         return rtrim($query, ', ');
     }
 
+    protected function GetCols(): array
+    {
+        return $this->cols;
+    }
+
     protected function MaxIDThisTable(): int
     {
         return (int)$this->ColThisTable("`$this->identify_table_id_col_name`", "`$this->identify_table_id_col_name` > ? ORDER BY `$this->identify_table_id_col_name` DESC LIMIT 1", [0]);

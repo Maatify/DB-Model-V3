@@ -180,7 +180,7 @@ abstract class PDOBuilder
             $queryString .= ' WHERE ' . $where;
         }
 
-        Logger::RecordLog($queryString);
+//        Logger::RecordLog($queryString);
         return $this->ExecuteStatement($queryString, $wheresVal);
     }
 

@@ -9,7 +9,7 @@
  * @link        https://github.com/Maatify/DB-Model-V3  view project on GitHub
  * @link        https://github.com/Maatify/Logger (maatify/logger)
  * @link        https://github.com/Maatify/Json (maatify/json)
- * @link        https://github.com/Maatify/PostValidator (maatify/post-validator)
+ * @link        https://github.com/Maatify/Post-Validator-V2 (maatify/post-validator-v2)
  * @copyright   ©2023 Maatify.dev
  * @note        This Project using for MYSQL PDO (PDO_MYSQL).
  * @note        This Project extends other libraries maatify/logger, maatify/json, maatify/post-validator.
@@ -23,7 +23,7 @@
 namespace Maatify\Model;
 
 use Maatify\Json\Json;
-use Maatify\PostValidator\PostValidator;
+use Maatify\PostValidator\PostValidatorV2;
 use PDOException;
 use ReflectionClass;
 
@@ -31,7 +31,7 @@ abstract class Model extends PDOBuilder
 {
 
     //========================================================================
-    protected PostValidator $postValidator;
+    protected PostValidatorV2 $postValidator;
     protected int $limit = 0;
     protected int|float $offset = 0;
     protected int $id = 0;
@@ -48,7 +48,7 @@ abstract class Model extends PDOBuilder
 
     public function __construct()
     {
-        $this->postValidator = PostValidator::obj();
+        $this->postValidator = PostValidatorV2::obj();
         $page = max(((int)$this->postValidator->Optional('page', 'page') ? : 1), 1);
         $this->limit = max(((int)$this->postValidator->Optional('limit', 'limit') ? : 25), 1);
         $this->pagination = $page - 1;

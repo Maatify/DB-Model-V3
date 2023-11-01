@@ -9,7 +9,7 @@
  * @link        https://github.com/Maatify/DB-Model-V3  view project on GitHub
  * @link        https://github.com/Maatify/Logger (maatify/logger)
  * @link        https://github.com/Maatify/Json (maatify/json)
- * @link        https://github.com/Maatify/PostValidator (maatify/post-validator)
+ * @link        https://github.com/Maatify/Post-Validator-V2 (maatify/post-validator-v2)
  * @copyright   ©2023 Maatify.dev
  * @note        This Project using for MYSQL PDO (PDO_MYSQL).
  * @note        This Project extends other libraries maatify/logger, maatify/json, maatify/post-validator.

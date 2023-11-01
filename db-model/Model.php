@@ -90,7 +90,7 @@ abstract class Model extends PDOBuilder
 
     protected function PostedID(): int
     {
-        return $this->id = (int)$this->postValidator->Require('id', 'int');
+        return $this->id = (int)$this->postValidator->Require($this->identify_table_id_col_name, 'int');
     }
 
     protected function ValidatePostedTableId(): void
@@ -151,12 +151,12 @@ abstract class Model extends PDOBuilder
 
     protected function ExistIDThisTable(int $id): bool
     {
-        return $this->RowIsExistThisTable('`id` = ? ', [$id]);
+        return $this->RowIsExistThisTable("`$this->identify_table_id_col_name` = ? ", [$id]);
     }
 
     protected function RowThisTableByID(int $id): array
     {
-        return $this->RowThisTable('*', '`id` = ? ', [$id]);
+        return $this->RowThisTable('*', "`$this->identify_table_id_col_name` = ? ", [$id]);
     }
 
     //========================================================================
@@ -187,7 +187,7 @@ abstract class Model extends PDOBuilder
 
     protected function MaxIDThisTable(): int
     {
-        return (int)$this->ColThisTable('`id`', '`id` > ? ORDER BY id DESC LIMIT 1', [0]);
+        return (int)$this->ColThisTable("`$this->identify_table_id_col_name`", "`$this->identify_table_id_col_name` > ? ORDER BY `$this->identify_table_id_col_name` DESC LIMIT 1", [0]);
     }
 
     protected function MaxColThisTable(string $column): int

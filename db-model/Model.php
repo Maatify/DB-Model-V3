@@ -96,8 +96,8 @@ abstract class Model extends PDOBuilder
     protected function ValidatePostedTableId(): int
     {
         $this->row_id = (int)$this->postValidator->Require($this->identify_table_id_col_name, 'int');
-        if(!($this->current_row = $this->RowThisTable('*', "`$this->identify_table_id_col_name`", [$this->row_id]))){
-            Json::Incorrect("`$this->identify_table_id_col_name`", "$this->identify_table_id_col_name Not Found", $this->class_name . __LINE__);
+        if(!($this->current_row = $this->RowThisTable('*', "`$this->identify_table_id_col_name` = ? ", [$this->row_id]))){
+            Json::Incorrect("$this->identify_table_id_col_name", "$this->identify_table_id_col_name Not Found", $this->class_name . __LINE__);
         }
         return $this->row_id;
     }

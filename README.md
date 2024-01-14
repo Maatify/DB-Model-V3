@@ -1,3 +1,12 @@
+[![Current version](https://img.shields.io/packagist/v/maatify/db-model-v3)][pkg]
+[![Packagist PHP Version Support](https://img.shields.io/packagist/php-v/maatify/db-model-v3)][pkg]
+[![Monthly Downloads](https://img.shields.io/packagist/dm/maatify/db-model-v3)][pkg-stats]
+[![Total Downloads](https://img.shields.io/packagist/dt/maatify/db-model-v3)][pkg-stats]
+[![Stars](https://img.shields.io/packagist/stars/maatify/db-model-v3)](https://github.com/maatify/db-model-v3/stargazers)
+
+[pkg]: <https://packagist.org/packages/maatify/db-model-v3>
+[pkg-stats]: <https://packagist.org/packages/maatify/db-model-v3/stats>
+
 # DB-Model
 
 maatify.dev MySql Database PDO Model handler, known by our team

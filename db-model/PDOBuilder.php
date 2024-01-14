@@ -60,7 +60,7 @@ abstract class PDOBuilder
                 if (!empty($expectCols) && in_array($col, $expectCols) || $col == 'description') {
                     $params[] = $value;
                 } else {
-                    $params[] = self::handleHtmlTags($value);
+                    $params[] = $this->handleHtmlTags($value);
                 }
             }
 
@@ -87,7 +87,7 @@ abstract class PDOBuilder
                 if (!empty($expectCols) && in_array($col, $expectCols) || $col == 'description') {
                     $params[] = $value;
                 } else {
-                    $params[] = self::handleHtmlTags($value);
+                    $params[] = $this->handleHtmlTags($value);
                 }
             }
 

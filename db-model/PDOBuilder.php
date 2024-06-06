@@ -190,6 +190,8 @@ abstract class PDOBuilder
         }
 
 //        Logger::RecordLog($queryString);
+//        Logger::RecordLog($wheresVal);
+
         return $this->ExecuteStatement($queryString, $wheresVal);
     }
 

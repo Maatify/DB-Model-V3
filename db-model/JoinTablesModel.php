@@ -33,6 +33,7 @@ abstract class JoinTablesModel extends PDOBuilder
     private function generateJoinColumns(bool $withAlias = false): string
     {
         $cols = '';
+        $this->group_by = '';
         foreach ($this->cols as $col => $type) {
             if ($col != $this->identify_table_id_col_name) {
                 $defaultValue = match ($type) {
@@ -71,6 +72,7 @@ abstract class JoinTablesModel extends PDOBuilder
     private function generateJoinUniqueColumns(array $columns_with_types, bool $withAlias = false): string
     {
         $cols = '';
+        $this->group_by = '';
         foreach ($columns_with_types as $col => $type) {
             if ($col != $this->identify_table_id_col_name) {
                 $defaultValue = match ($type) {

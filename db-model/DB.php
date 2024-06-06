@@ -55,6 +55,8 @@ class DB
                 $config['password'],
                 $config['options'] ?? $defaultOptions
             );
+            $this->pdo->exec("SET CHARACTER SET utf8mb4");
+            $this->pdo->exec("SET COLLATION_CONNECTION = 'utf8mb4_unicode_ci'");
 //            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 //            $this->pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 //            $this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);

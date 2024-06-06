@@ -32,22 +32,7 @@ abstract class JoinTablesModel extends PDOBuilder
     // ======================= Join This Table =======================
     private function generateJoinColumns(bool $withAlias = false): string
     {
-        $cols = '';
-        $this->group_by = '';
-        foreach ($this->cols as $col => $type) {
-            if ($col != $this->identify_table_id_col_name) {
-                $defaultValue = match ($type) {
-                    1 => 0,
-                    2 => "0",
-                    default => "''",
-                };
-                $columnAlias = !empty($withAlias) ? $this->tableAlias . '_' . $col : $col;
-                $cols .= " IFNULL(`$this->tableName`.`$col`, $defaultValue) as $columnAlias, ";
-                $this->group_by .= " `$this->tableName`.`$col`, ";
-            }
-        }
-        $this->group_by = rtrim($this->group_by, ", ");
-        return rtrim($cols, ', ');
+        return $this->generateJoinUniqueColumns($this->cols, $withAlias);
     }
 
 

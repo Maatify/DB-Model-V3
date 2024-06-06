@@ -22,7 +22,7 @@
 
 namespace Maatify\Model;
 
-/*abstract class JoinTablesModel extends PDOBuilder
+abstract class JoinTablesModel extends PDOBuilder
 {
     const IDENTIFY_TABLE_ID_COL_NAME = 'id';
     protected string $identify_table_id_col_name = self::IDENTIFY_TABLE_ID_COL_NAME;
@@ -44,6 +44,25 @@ namespace Maatify\Model;
         }
         return rtrim($cols, ', ');
     }
+
+
+/*    private function generateJoinUniqueColumns(array $columns_with_types): string
+    {
+        $cols = '';
+        foreach ($columns_with_types as $col => $type) {
+            if ($col != $this->identify_table_id_col_name) {
+                $defaultValue = match ($type) {
+                    1 => 0,
+                    2 => "0",
+                    default => "''",
+                };
+                $columnAlias = $col;
+                $cols .= " IFNULL(`$this->tableName`.`$col`, $defaultValue) as $columnAlias, ";
+            }
+        }
+        return rtrim($cols, ', ');
+    }*/
+
 
     private function generateJoinUniqueColumns(array $columns_with_types, bool $withAlias = false): string
     {
@@ -114,47 +133,5 @@ namespace Maatify\Model;
     public function LeftJoinThisTableWithUniqueColsWithTableAlias(string $table_name, array $columns_with_types): array
     {
         return $this->generateJoinUniqueCols('LEFT', $table_name, $columns_with_types, true);
-    }
-}*/
-
-abstract class JoinTablesModel extends PDOBuilder
-{
-    private function generateJoinColumns(array $columns_with_types, bool $withAlias = false): string
-    {
-        $cols = '';
-        foreach ($columns_with_types as $col => $type) {
-            if ($col !== $this->identify_table_id_col_name) {
-                $defaultValue = match ($type) {
-                    1 => 0,
-                    2 => "0",
-                    default => "''",
-                };
-                $columnAlias = $withAlias ? $this->tableAlias . '_' . $col : $col;
-                $cols .= "IFNULL(`$this->tableName`.`$col`, $defaultValue) as $columnAlias, ";
-            }
-        }
-        return rtrim($cols, ', ');
-    }
-
-    private function generateJoinClause(string $joinType, string $table_name): string
-    {
-        return "$joinType JOIN `$this->tableName` ON `$this->tableName`.`$this->identify_table_id_col_name` = `$table_name`.`$this->identify_table_id_col_name`";
-    }
-
-    private function generateJoin(string $joinType, string $table_name, array $columns_with_types = [], bool $withAlias = false): array
-    {
-        $joinClause = $this->generateJoinClause($joinType, $table_name);
-        $columns = $this->generateJoinColumns($columns_with_types ?: $this->cols, $withAlias);
-        return [$joinClause, $columns];
-    }
-
-    public function InnerJoinThisTable(string $table_name, array $columns_with_types = [], bool $withAlias = false): array
-    {
-        return $this->generateJoin('INNER', $table_name, $columns_with_types, $withAlias);
-    }
-
-    public function LeftJoinThisTable(string $table_name, array $columns_with_types = [], bool $withAlias = false): array
-    {
-        return $this->generateJoin('LEFT', $table_name, $columns_with_types, $withAlias);
     }
 }

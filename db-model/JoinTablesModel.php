@@ -27,6 +27,8 @@ abstract class JoinTablesModel extends PDOBuilder
     const IDENTIFY_TABLE_ID_COL_NAME = 'id';
     protected string $identify_table_id_col_name = self::IDENTIFY_TABLE_ID_COL_NAME;
 
+    private string $group_by = '';
+
     // ======================= Join This Table =======================
     private function generateJoinColumns(bool $withAlias = false): string
     {
@@ -40,8 +42,10 @@ abstract class JoinTablesModel extends PDOBuilder
                 };
                 $columnAlias = !empty($withAlias) ? $this->tableAlias . '_' . $col : $col;
                 $cols .= " IFNULL(`$this->tableName`.`$col`, $defaultValue) as $columnAlias, ";
+                $this->group_by .= " `$this->tableName`.`$col`, ";
             }
         }
+        $this->group_by = rtrim($this->group_by, ", ");
         return rtrim($cols, ', ');
     }
 
@@ -76,8 +80,10 @@ abstract class JoinTablesModel extends PDOBuilder
                 };
                 $columnAlias = !empty($withAlias) ? $this->tableAlias . '_' . $col : $col;
                 $cols .= " IFNULL(`$this->tableName`.`$col`, $defaultValue) as $columnAlias, ";
+                $this->group_by .= " `$this->tableName`.`$col`, ";
             }
         }
+        $this->group_by = rtrim($this->group_by, ", ");
         return rtrim($cols, ', ');
     }
 
@@ -85,14 +91,14 @@ abstract class JoinTablesModel extends PDOBuilder
     {
         $joinClause = " $joinType JOIN `$this->tableName` ON `$this->tableName`.`$this->identify_table_id_col_name` = `$table_name`.`$this->identify_table_id_col_name`";
         $columns = $this->generateJoinColumns($withAlias);
-        return [$joinClause, $columns];
+        return [$joinClause, $columns, $this->group_by];
     }
 
     private function generateJoinUniqueCols(string $joinType, string $table_name, array $columns_with_types, bool $withAlias = false): array
     {
         $joinClause = " $joinType JOIN `$this->tableName` ON `$this->tableName`.`$this->identify_table_id_col_name` = `$table_name`.`$this->identify_table_id_col_name`";
         $columns = $this->generateJoinUniqueColumns($columns_with_types, $withAlias);
-        return [$joinClause, $columns];
+        return [$joinClause, $columns, $this->group_by];
     }
 
     public function InnerJoinThisTableWithTableAlias(string $table_name): array

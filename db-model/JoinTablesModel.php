@@ -38,7 +38,23 @@ abstract class JoinTablesModel extends PDOBuilder
                     2 => "0",
                     default => "''",
                 };
-                $columnAlias = $withAlias ? $this->tableAlias . $col : $col;
+                $columnAlias = $withAlias ? $this->tableAlias . '_'. $col : $col;
+                $cols .= " IFNULL(`$this->tableName`.`$col`, $defaultValue) as $columnAlias, ";
+            }
+        }
+        return rtrim($cols, ', ');
+    }
+    private function generateJoinUniqueColumns(array $columns_with_types): string
+    {
+        $cols = '';
+        foreach ($columns_with_types as $col => $type) {
+            if ($col != $this->identify_table_id_col_name) {
+                $defaultValue = match ($type) {
+                    1 => 0,
+                    2 => "0",
+                    default => "''",
+                };
+                $columnAlias = $col;
                 $cols .= " IFNULL(`$this->tableName`.`$col`, $defaultValue) as $columnAlias, ";
             }
         }

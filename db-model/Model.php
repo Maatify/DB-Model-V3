@@ -262,6 +262,51 @@ abstract class Model extends PDOBuilder
         return (bool)$this->Col($tableName, '*', $where, $wheresVal);
     }
 
+    // ======================= Join This Table =======================
+    private function generateJoinColumns(bool $withAlias = false): string
+    {
+        $cols = '';
+        foreach ($this->cols as $col => $type) {
+            if ($col != $this->identify_table_id_col_name) {
+                $defaultValue = match ($type) {
+                    1 => 0,
+                    2 => "0",
+                    default => "''",
+                };
+                $columnAlias = $withAlias ? $this->tableAlias . $col : $col;
+                $cols .= " IFNULL(`$this->tableName`.`$col`, $defaultValue) as $columnAlias, ";
+            }
+        }
+        return rtrim($cols, ', ');
+    }
+
+    private function generateJoin(string $joinType, string $table_name, bool $withAlias = false): array
+    {
+        $joinClause = " $joinType JOIN `$this->tableName` ON `$this->tableName`.`$this->identify_table_id_col_name` = `$table_name`.`$this->identify_table_id_col_name`";
+        $columns = $this->generateJoinColumns($withAlias);
+        return [$joinClause, $columns];
+    }
+
+    public function InnerJoinThisTableWithTableAlias(string $table_name): array
+    {
+        return $this->generateJoin('INNER', $table_name, true);
+    }
+
+    public function InnerJoinThisTableWithoutTableAlias(string $table_name): array
+    {
+        return $this->generateJoin('INNER', $table_name);
+    }
+
+    public function LeftJoinThisTableWithTableAlias(string $table_name): array
+    {
+        return $this->generateJoin('LEFT', $table_name, true);
+    }
+
+    public function LeftJoinThisTableWithoutTableAlias(string $table_name): array
+    {
+        return $this->generateJoin('LEFT', $table_name);
+    }
+
 
     // ======================= Json =======================
 

@@ -107,7 +107,7 @@ abstract class PDOBuilder
 
             return (int) $this->db->lastInsertId();
         } catch (PDOException $e) {
-            $this->logError($e, 'Insert', __LINE__, $colsValues);
+            $this->logError($e, 'Insert ' . $query, __LINE__, $colsValues);
             return 0;
         }
     }

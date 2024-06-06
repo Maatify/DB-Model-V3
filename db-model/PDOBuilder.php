@@ -77,8 +77,17 @@ abstract class PDOBuilder
     }
 
     protected function Add(array $colsValues, array $expectCols = []): int {
+        return $this->AddOrIgnoreAdd($colsValues, $expectCols);
+    }
+
+    protected function AddIgnore(array $colsValues, array $expectCols = []): int {
+        return $this->AddOrIgnoreAdd($colsValues, $expectCols, true);
+    }
+
+    private function AddOrIgnoreAdd(array $colsValues, array $expectCols = [], bool $ignore = false): int
+    {
         try {
-            $query = 'INSERT INTO `' . $this->tableName . '` (';
+            $query = 'INSERT ' . ($ignore ? 'IGNORE' : '') . ' INTO `' . $this->tableName . '` (';
             $cols = [];
             $params = [];
 

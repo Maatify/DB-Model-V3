@@ -38,7 +38,7 @@ abstract class JoinTablesModel extends PDOBuilder
                     2 => "0",
                     default => "''",
                 };
-                $columnAlias = $withAlias ? $this->tableAlias . '_' . $col : $col;
+                $columnAlias = !empty($withAlias) ? $this->tableAlias . '_' . $col : $col;
                 $cols .= " IFNULL(`$this->tableName`.`$col`, $defaultValue) as $columnAlias, ";
             }
         }

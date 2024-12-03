@@ -46,7 +46,8 @@ abstract class JoinTablesModel extends PDOBuilder
                 };
 
                 $columnAlias = $withAlias ? $this->tableAlias . '_' . $col : $col;
-                $cols .= " MAX(CAST(IFNULL(`$this->tableName`.`$col`, $defaultValue) AS CHAR)) as `$columnAlias`, ";
+                $cols .= " IFNULL(`$this->tableName`.`$col`, $defaultValue) as `$columnAlias`, ";
+//                $cols .= " MAX(CAST(IFNULL(`$this->tableName`.`$col`, $defaultValue) AS CHAR)) as `$columnAlias`, ";
                 $this->group_by .= " `$this->tableName`.`$col`, ";
             }
         }

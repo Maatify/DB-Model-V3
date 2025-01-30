@@ -14,7 +14,7 @@ maatify.dev MySql Database PDO Model handler, known by our team
 # Installation
 
 ```shell
-composer require maatify/db-model-v3
+composer require maatify/db-model-two-v3
 ```
 
 # Usage
@@ -25,11 +25,7 @@ composer require maatify/db-model-v3
 
 namespace Maatify\files;
 
-use Maatify\Json\Json;
-use Maatify\Logger\Logger;
-use Maatify\Model\DB;
-use Maatify\Model\Model;
-use PDOException;
+use Maatify\Json\Json;use Maatify\Logger\Logger;use Maatify\Model\Model;use model\DB;use PDOException;
 
 abstract class DbConnector extends Model
 {

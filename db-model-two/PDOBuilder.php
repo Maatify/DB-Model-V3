@@ -20,8 +20,9 @@
  *
  */
 
-namespace Maatify\Model;
+namespace Maatify\ModelTwo;
 
+use Maatify\Model\DB;
 use Maatify\Json\Json;
 use Maatify\Logger\Logger;
 use PDOException;

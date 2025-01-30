@@ -20,7 +20,7 @@
  *
  */
 
-namespace Maatify\Model;
+namespace Maatify\ModelTwo;
 
 abstract class JoinTablesModel extends PDOBuilder
 {

@@ -19,7 +19,7 @@
  * FITNESS FOR A PARTICULAR PURPOSE.
  *
  */
-namespace Maatify\Model;
+namespace Maatify\ModelTwo;
 
 use Maatify\Json\Json;
 use Maatify\PostValidatorV2\PostValidatorV2;

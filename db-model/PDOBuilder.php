@@ -30,7 +30,7 @@ use PDOStatement;
 abstract class PDOBuilder
 {
 
-    protected DB $db;
+    protected DB $pdo;
     const TABLE_NAME = 'admin';
     protected string $tableName;
     protected string $tableAlias;
@@ -105,7 +105,7 @@ abstract class PDOBuilder
 
             $this->ExecuteStatement($query, $params);
 
-            return (int) $this->db->lastInsertId();
+            return (int) $this->pdo->lastInsertId();
         } catch (PDOException $e) {
             $this->logError($e, 'Insert ' . $query, __LINE__, $colsValues);
             return 0;
@@ -128,7 +128,7 @@ abstract class PDOBuilder
         $queryString = preg_replace('~[\r\n]+~', '', $queryString);
         // Remove extra whitespace from the query string
         $queryString = preg_replace('!\s+!', ' ', $queryString);
-        $query = $this->db->prepare($queryString);
+        $query = $this->pdo->prepare($queryString);
         $query->execute($values);
         return $query;
     }
@@ -157,7 +157,7 @@ abstract class PDOBuilder
         try {
             $queryString = 'SELECT count(' . $column . ') as count FROM ' . $table . ($where ? ' WHERE ' . $where : '') . ';';
             //            Logger::RecordLog($queryString);
-            $query = $this->db->prepare($queryString);
+            $query = $this->pdo->prepare($queryString);
             $query->execute($wheresVal);
 
             return (int)$query->fetchColumn();

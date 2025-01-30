@@ -19,6 +19,7 @@ composer require maatify/db-model-v3
 
 # Usage
 #### Create DbConnector Connection Class Extends Model
+
 ```PHP
 <?php
 
@@ -52,7 +53,7 @@ abstract class DbConnector extends Model
             }
         }
         parent::__construct();
-        $this->db = static::$connection;
+        $this->pdo = static::$connection;
     }
 }
 ```

@@ -29,7 +29,7 @@ abstract class PaginationModel extends JoinTablesModel
 {
     //========================================================================
     protected PostValidatorV2 $postValidator;
-    protected int $limit = 0;
+    protected int $page_limit = 0;
     protected int|float $offset = 0;
     protected int $pagination = 0;
     protected int $previous = 0;
@@ -44,18 +44,18 @@ abstract class PaginationModel extends JoinTablesModel
     {
         $this->postValidator = PostValidatorV2::obj();
         $page_no = max(((int)$this->postValidator->Optional('page_no', 'page_no') ? : 1), 1);
-        $this->limit = max(((int)$this->postValidator->Optional('limit', 'limit') ? : 25), 1);
+        $this->page_limit = max(((int)$this->postValidator->Optional('page_limit', 'page_limit') ? : 25), 1);
         $this->pagination = $page_no - 1;
         if ($this->pagination > 0) {
             $this->previous = $this->pagination;
         }
-        $this->offset = $this->pagination * $this->limit;
+        $this->offset = $this->pagination * $this->page_limit;
         $this->class_name = (new ReflectionClass($this))->getShortName() . '::';
     }
 
     protected function PaginationNext(int $count): int
     {
-        if ($this->pagination + 1 >= $count / $this->limit) {
+        if ($this->pagination + 1 >= $count / $this->page_limit) {
             return 0;
         } else {
             return $this->pagination + 2;
@@ -64,7 +64,7 @@ abstract class PaginationModel extends JoinTablesModel
 
     protected function PaginationLast(int $count): int
     {
-        $pages = $count / $this->limit;
+        $pages = $count / $this->page_limit;
         if ((int)$pages == $pages) {
             $page = $pages;
         } else {
@@ -84,7 +84,7 @@ abstract class PaginationModel extends JoinTablesModel
 
     protected function AddWherePagination(): string
     {
-        return " limit $this->limit OFFSET $this->offset ";
+        return " limit $this->page_limit OFFSET $this->offset ";
     }
 
     protected function PaginationHandler(int $count, array $data, array $others = []): array
@@ -95,7 +95,7 @@ abstract class PaginationModel extends JoinTablesModel
                 'page_previous' => $this->PaginationPrevious(),
                 'page_next'     => $this->PaginationNext($count),
                 'page_last'     => $this->PaginationLast($count),
-                'page_limit'    => $this->limit,
+                'page_limit'    => $this->page_limit,
                 'page_current'  => $this->pagination + 1,
             ],
             'data'       => $data,

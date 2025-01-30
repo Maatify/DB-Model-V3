@@ -28,7 +28,6 @@ use PDOException;
 
 abstract class Model extends PaginationModel
 {
-
     protected PostValidatorV2 $postValidator;
     protected string $class_name;
     protected int $row_id = 0;

@@ -67,6 +67,16 @@ class DB implements DBInterface
         }
     }
 
+    /**
+     * Returns the PDO instance.
+     *
+     * @return PDO
+     */
+    public function getPdo(): PDO
+    {
+        return $this->pdo;
+    }
+
     public function __call(string $name, array $arguments)
     {
         try {

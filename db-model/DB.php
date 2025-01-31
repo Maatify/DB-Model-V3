@@ -25,7 +25,7 @@ declare(strict_types = 1);
 namespace Maatify\Model;
 
 use Exception;
-use Maatify\dbContracts\DBInterface;
+use Maatify\DbContracts\DBInterface;
 use Maatify\Json\Json;
 use Maatify\Logger\Logger;
 use PDO;

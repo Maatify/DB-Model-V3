@@ -17,7 +17,4 @@ namespace Maatify\DbContracts;
  * @method lastInsertId();
  * @method prepare(string $queryString):
  * */
-interface DBInterface
-{
-
-}
+interface DBInterface{}

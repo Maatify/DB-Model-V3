@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Maatify\dbContracts;
+namespace Maatify\DbContracts;
 
 /**
  * @method lastInsertId();

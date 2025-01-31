@@ -1,16 +1,15 @@
 <?php
 /**
- * @copyright   ©2024 Maatify.dev
- * @Liberary    DB-Model-V3
- * @Project     DB-Model-V3
+ * @copyright   ©2025 Maatify.dev
+ * @Liberary    DB-Model
+ * @Project     DB-Model
  * @author      Mohamed Abdulalim (megyptm) <mohamed@maatify.dev>
- * @since       2024-12-02 5:56 PM
+ * @since       2025-01-31 5:17 PM
  * @see         https://www.maatify.dev Maatify.com
  * @link        https://github.com/Maatify/DB-Model-V3  view project on GitHub
  * @link        https://github.com/Maatify/Logger (maatify/logger)
  * @link        https://github.com/Maatify/Json (maatify/json)
  * @link        https://github.com/Maatify/Post-Validator-V2 (maatify/post-validator-v2)
- * @copyright   ©2023 Maatify.dev
  * @note        This Project using for MYSQL PDO (PDO_MYSQL).
  * @note        This Project extends other libraries maatify/logger, maatify/json, maatify/post-validator.
  *
@@ -19,6 +18,8 @@
  * FITNESS FOR A PARTICULAR PURPOSE.
  *
  */
+
+declare(strict_types = 1);
 
 namespace Maatify\ModelTwo;
 
@@ -47,7 +48,7 @@ abstract class JoinTablesModel extends PDOBuilder
 
                 $columnAlias = $withAlias ? $this->tableAlias . '_' . $col : $col;
                 $cols .= " IFNULL(`$this->tableName`.`$col`, $defaultValue) as `$columnAlias`, ";
-//                $cols .= " MAX(CAST(IFNULL(`$this->tableName`.`$col`, $defaultValue) AS CHAR)) as `$columnAlias`, ";
+                //                $cols .= " MAX(CAST(IFNULL(`$this->tableName`.`$col`, $defaultValue) AS CHAR)) as `$columnAlias`, ";
                 $this->group_by .= " `$this->tableName`.`$col`, ";
             }
         }
@@ -90,42 +91,42 @@ abstract class JoinTablesModel extends PDOBuilder
 
     // ======================== Public Methods =======================
 
-    public function InnerJoinThisTableWithTableAlias(string $table_name): array
+    public function innerJoinThisTableWithTableAlias(string $table_name): array
     {
         return $this->generateJoin('INNER', $table_name, true);
     }
 
-    public function InnerJoinThisTableWithoutTableAlias(string $table_name): array
+    public function innerJoinThisTableWithoutTableAlias(string $table_name): array
     {
         return $this->generateJoin('INNER', $table_name);
     }
 
-    public function LeftJoinThisTableWithTableAlias(string $table_name): array
+    public function leftJoinThisTableWithTableAlias(string $table_name): array
     {
         return $this->generateJoin('LEFT', $table_name, true);
     }
 
-    public function LeftJoinThisTableWithoutTableAlias(string $table_name): array
+    public function leftJoinThisTableWithoutTableAlias(string $table_name): array
     {
         return $this->generateJoin('LEFT', $table_name);
     }
 
-    public function InnerJoinThisTableWithUniqueCols(string $table_name, array $columns_with_types): array
+    public function innerJoinThisTableWithUniqueCols(string $table_name, array $columns_with_types): array
     {
         return $this->generateJoinUniqueCols('INNER', $table_name, $columns_with_types);
     }
 
-    public function InnerJoinThisTableWithUniqueColsWithTableAlias(string $table_name, array $columns_with_types): array
+    public function innerJoinThisTableWithUniqueColsWithTableAlias(string $table_name, array $columns_with_types): array
     {
         return $this->generateJoinUniqueCols('INNER', $table_name, $columns_with_types, true);
     }
 
-    public function LeftJoinThisTableWithUniqueCols(string $table_name, array $columns_with_types): array
+    public function leftJoinThisTableWithUniqueCols(string $table_name, array $columns_with_types): array
     {
         return $this->generateJoinUniqueCols('LEFT', $table_name, $columns_with_types);
     }
 
-    public function LeftJoinThisTableWithUniqueColsWithTableAlias(string $table_name, array $columns_with_types): array
+    public function leftJoinThisTableWithUniqueColsWithTableAlias(string $table_name, array $columns_with_types): array
     {
         return $this->generateJoinUniqueCols('LEFT', $table_name, $columns_with_types, true);
     }

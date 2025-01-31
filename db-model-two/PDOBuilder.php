@@ -1,16 +1,15 @@
 <?php
 /**
- * @copyright   ©2023 Maatify.dev
+ * @copyright   ©2025 Maatify.dev
  * @Liberary    DB-Model
  * @Project     DB-Model
  * @author      Mohamed Abdulalim (megyptm) <mohamed@maatify.dev>
- * @since       2023-05-21 4:17 PM
+ * @since       2025-01-31 5:17 PM
  * @see         https://www.maatify.dev Maatify.com
  * @link        https://github.com/Maatify/DB-Model-V3  view project on GitHub
  * @link        https://github.com/Maatify/Logger (maatify/logger)
  * @link        https://github.com/Maatify/Json (maatify/json)
  * @link        https://github.com/Maatify/Post-Validator-V2 (maatify/post-validator-v2)
- * @copyright   ©2023 Maatify.dev
  * @note        This Project using for MYSQL PDO (PDO_MYSQL).
  * @note        This Project extends other libraries maatify/logger, maatify/json, maatify/post-validator.
  *
@@ -19,6 +18,8 @@
  * FITNESS FOR A PARTICULAR PURPOSE.
  *
  */
+
+declare(strict_types = 1);
 
 namespace Maatify\ModelTwo;
 
@@ -30,7 +31,6 @@ use PDOStatement;
 
 abstract class PDOBuilder
 {
-
     protected DB $pdo;
     const TABLE_NAME = 'admin';
     protected string $tableName;
@@ -41,7 +41,7 @@ abstract class PDOBuilder
 
     //          ['id'=>1, 'name_en'=>0, 'name_ar'=>0, 'association_id'=>1, 'salary_percentage'=>1, 'required_all'=>1, 'status'=>1];
 
-    protected function ColJoinTypeToString(int $type): float|int|string
+    protected function colJoinTypeToString(int $type): float|int|string
     {
         return match ($type) {
             1 => 0,
@@ -50,7 +50,7 @@ abstract class PDOBuilder
         };
     }
 
-    protected function Edit(array $colsValues, string $where, array $wheresVal, array $expectCols = []): bool {
+    protected function edit(array $colsValues, string $where, array $wheresVal, array $expectCols = []): bool {
         try {
             $query = 'UPDATE `' . $this->tableName . '` SET ';
             $params = [];
@@ -70,22 +70,22 @@ abstract class PDOBuilder
 
             $params = array_merge($params, $wheresVal);
 
-            return (bool) $this->ExecuteStatement($query, $params);
+            return (bool) $this->executeStatement($query, $params);
         } catch (PDOException $e) {
             $this->logError($e, 'Update ' . $this->tableName . ' ' . $where, __LINE__, array_merge($colsValues, $wheresVal));
             return false;
         }
     }
 
-    protected function Add(array $colsValues, array $expectCols = []): int {
-        return $this->AddOrIgnoreAdd($colsValues, $expectCols);
+    protected function add(array $colsValues, array $expectCols = []): int {
+        return $this->addOrIgnoreAdd($colsValues, $expectCols);
     }
 
-    protected function AddIgnore(array $colsValues, array $expectCols = []): int {
-        return $this->AddOrIgnoreAdd($colsValues, $expectCols, true);
+    protected function addIgnore(array $colsValues, array $expectCols = []): int {
+        return $this->addOrIgnoreAdd($colsValues, $expectCols, true);
     }
 
-    private function AddOrIgnoreAdd(array $colsValues, array $expectCols = [], bool $ignore = false): int
+    private function addOrIgnoreAdd(array $colsValues, array $expectCols = [], bool $ignore = false): int
     {
         try {
             $query = 'INSERT ' . ($ignore ? 'IGNORE' : '') . ' INTO `' . $this->tableName . '` (';
@@ -104,7 +104,7 @@ abstract class PDOBuilder
             $query .= implode(', ', $cols);
             $query .= ') VALUES (' . rtrim(str_repeat('?,', count($colsValues)), ',') . ')';
 
-            $this->ExecuteStatement($query, $params);
+            $this->executeStatement($query, $params);
 
             return (int) $this->pdo->lastInsertId();
         } catch (PDOException $e) {
@@ -113,18 +113,18 @@ abstract class PDOBuilder
         }
     }
 
-    protected function Delete(string $where, array $wheresVal): bool {
+    protected function delete(string $where, array $wheresVal): bool {
         try {
             $query = 'DELETE FROM `' . $this->tableName . '` WHERE ' . $where;
 
-            return (bool) $this->ExecuteStatement($query, $wheresVal);
+            return (bool) $this->executeStatement($query, $wheresVal);
         } catch (PDOException $e) {
             $this->logError($e, 'Delete ' . $this->tableName . ' ' . $where, __LINE__, $wheresVal);
             return false;
         }
     }
 
-    private function ExecuteStatement(string $queryString, array $values = []): bool|PDOStatement {
+    private function executeStatement(string $queryString, array $values = []): bool|PDOStatement {
         // Remove extra line breaks from the query string
         $queryString = preg_replace('~[\r\n]+~', '', $queryString);
         // Remove extra whitespace from the query string
@@ -148,12 +148,12 @@ abstract class PDOBuilder
         return $value;
     }
 
-    protected function CountThisTableRows(string $column = '*', string $where = '', array $wheresVal = []): int
+    protected function countThisTableRows(string $column = '*', string $where = '', array $wheresVal = []): int
     {
-        return $this->CountTableRows($this->tableName, $column, $where, $wheresVal);
+        return $this->countTableRows($this->tableName, $column, $where, $wheresVal);
     }
 
-    protected function CountTableRows(string $table, string $column = '*', string $where = '', array $wheresVal = []): int
+    protected function countTableRows(string $table, string $column = '*', string $where = '', array $wheresVal = []): int
     {
         try {
             $queryString = 'SELECT count(' . $column . ') as count FROM ' . $table . ($where ? ' WHERE ' . $where : '') . ';';
@@ -163,26 +163,26 @@ abstract class PDOBuilder
 
             return (int)$query->fetchColumn();
         } catch (PDOException $e) {
-            $this->LogError($e, 'CountTableRows: ' . $queryString ?? '', __LINE__);
+            $this->logError($e, 'CountTableRows: ' . $queryString ?? '', __LINE__);
 
             return 0;
         }
     }
 
-    protected function SortTable(string $column): bool
+    protected function sortTable(string $column): bool
     {
         try {
             $queryString = 'SET @num := 0; UPDATE ' . $this->tableName . ' SET `' . $column . '` = @num := (@num+1); ALTER TABLE ' . $this->tableName . ' AUTO_INCREMENT = 1;';
 
-            return $this->ExecuteStatement($queryString);
+            return $this->executeStatement($queryString);
         } catch (PDOException $e) {
-            $this->LogError($e, 'SortTable: ' . $queryString ?? '', __LINE__);
+            $this->logError($e, 'SortTable: ' . $queryString ?? '', __LINE__);
 
             return false;
         }
     }
 
-    protected function PrepareSelect(string $tablesName, string $columns = '*', string $where = '', array $wheresVal = []): bool|PDOStatement
+    protected function prepareSelect(string $tablesName, string $columns = '*', string $where = '', array $wheresVal = []): bool|PDOStatement
     {
         $queryString = 'SELECT ' . $columns;
         $queryString .= ' FROM ' . $tablesName;
@@ -190,51 +190,51 @@ abstract class PDOBuilder
             $queryString .= ' WHERE ' . $where;
         }
 
-//        Logger::RecordLog($queryString);
-//        Logger::RecordLog($wheresVal);
+        //        Logger::RecordLog($queryString);
+        //        Logger::RecordLog($wheresVal);
 
-        return $this->ExecuteStatement($queryString, $wheresVal);
+        return $this->executeStatement($queryString, $wheresVal);
     }
 
-    protected function FetchRow(PDOStatement $query): array
+    protected function fetchRow(PDOStatement $query): array
     {
         return $query->fetch() ? : [];
     }
 
-    protected function FetchRows(PDOStatement $query): array
+    protected function fetchRows(PDOStatement $query): array
     {
         return $query->fetchAll() ? : [];
     }
 
-    protected function FetchCol(PDOStatement $query): string
+    protected function fetchCol(PDOStatement $query): string
     {
         return $query->fetchColumn() ? : '';
     }
 
-    protected function LogError(PDOException $e, string $queryString, int $line, array $wheresVal = []): array
+    protected function logError(PDOException $e, string $queryString, int $line, array $wheresVal = []): array
     {
         Logger::RecordLog(['query' => $queryString, 'wheresVal' => $wheresVal, 'line' => $line, 'exception' => $e,], 'db_errors');
 
         return [];
     }
 
-    protected function AlertTable($fullAlert): bool
+    protected function alertTable($fullAlert): bool
     {
-        return $this->SpecialQuery($fullAlert);
+        return $this->specialQuery($fullAlert);
     }
 
-    protected function SpecialQuery($queryString): bool
+    protected function specialQuery($queryString): bool
     {
         try {
-            return (bool)$this->ExecuteStatement($queryString);
+            return (bool)$this->executeStatement($queryString);
         } catch (PDOException $e) {
-            $this->LogError($e, 'SpecialQuery ' . $queryString, __LINE__, []);
+            $this->logError($e, 'SpecialQuery ' . $queryString, __LINE__, []);
             Json::DbError(__LINE__);
             return false;
         }
     }
 
-    protected function HtmlDecode(string $str): string
+    protected function htmlDecode(string $str): string
     {
         $str = str_replace('’', '&#039;', $str);
         $str = str_replace('"', '&quot;', $str);
@@ -243,7 +243,7 @@ abstract class PDOBuilder
         return html_entity_decode($str);
     }
 
-    protected function Str2JsonFromDB(string $json_string){
-        return json_decode($this->HtmlDecode($json_string), true );
+    protected function str2JsonFromDB(string $json_string){
+        return json_decode($this->htmlDecode($json_string), true );
     }
 }

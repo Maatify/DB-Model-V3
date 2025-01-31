@@ -14,7 +14,7 @@ maatify.dev MySql Database PDO Model handler, known by our team
 # Installation
 
 ```shell
-composer require maatify/db-model-two-v3
+composer require maatify/db-model-v3
 ```
 
 # Usage

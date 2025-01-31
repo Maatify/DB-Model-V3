@@ -1,16 +1,15 @@
 <?php
 /**
- * @copyright   ©2024 Maatify.dev
- * @Liberary    DB-Model-V3
- * @Project     DB-Model-V3
+ * @copyright   ©2025 Maatify.dev
+ * @Liberary    DB-Model
+ * @Project     DB-Model
  * @author      Mohamed Abdulalim (megyptm) <mohamed@maatify.dev>
- * @since       2024-07-11 11:39 AM
+ * @since       2025-01-31 5:17 PM
  * @see         https://www.maatify.dev Maatify.com
  * @link        https://github.com/Maatify/DB-Model-V3  view project on GitHub
  * @link        https://github.com/Maatify/Logger (maatify/logger)
  * @link        https://github.com/Maatify/Json (maatify/json)
  * @link        https://github.com/Maatify/Post-Validator-V2 (maatify/post-validator-v2)
- * @copyright   ©2023 Maatify.dev
  * @note        This Project using for MYSQL PDO (PDO_MYSQL).
  * @note        This Project extends other libraries maatify/logger, maatify/json, maatify/post-validator.
  *
@@ -19,6 +18,9 @@
  * FITNESS FOR A PARTICULAR PURPOSE.
  *
  */
+
+declare(strict_types = 1);
+
 namespace Maatify\ModelTwo;
 
 use Maatify\Json\Json;
@@ -53,7 +55,7 @@ abstract class PaginationModel extends JoinTablesModel
         $this->class_name = (new ReflectionClass($this))->getShortName() . '::';
     }
 
-    protected function PaginationNext(int $count): int
+    protected function paginationNext(int $count): int
     {
         if ($this->pagination + 1 >= $count / $this->page_limit) {
             return 0;
@@ -62,7 +64,7 @@ abstract class PaginationModel extends JoinTablesModel
         }
     }
 
-    protected function PaginationLast(int $count): int
+    protected function paginationLast(int $count): int
     {
         $pages = $count / $this->page_limit;
         if ((int)$pages == $pages) {
@@ -70,31 +72,31 @@ abstract class PaginationModel extends JoinTablesModel
         } else {
             $page = (int)$pages + 1;
         }
-        if ($count && $this->PaginationPrevious() + 1 > $page) {
+        if ($count && $this->paginationPrevious() + 1 > $page) {
             return 0;
         }
 
         return $page;
     }
 
-    protected function PaginationPrevious(): int
+    protected function paginationPrevious(): int
     {
         return $this->previous;
     }
 
-    protected function AddWherePagination(): string
+    protected function addWherePagination(): string
     {
         return " limit $this->page_limit OFFSET $this->offset ";
     }
 
-    protected function PaginationHandler(int $count, array $data, array $others = []): array
+    protected function paginationHandler(int $count, array $data, array $others = []): array
     {
         return [
             'pagination' => [
                 'count'         => $count,
-                'page_previous' => $this->PaginationPrevious(),
-                'page_next'     => $this->PaginationNext($count),
-                'page_last'     => $this->PaginationLast($count),
+                'page_previous' => $this->paginationPrevious(),
+                'page_next'     => $this->paginationNext($count),
+                'page_last'     => $this->paginationLast($count),
                 'page_limit'    => $this->page_limit,
                 'page_current'  => $this->pagination + 1,
             ],
@@ -103,7 +105,7 @@ abstract class PaginationModel extends JoinTablesModel
         ];
     }
 
-    protected function JsonHandlerWithOther(array $data, array $other = [], string|int $line = ''): void
+    protected function jsonHandlerWithOther(array $data, array $other = [], string|int $line = ''): void
     {
         Json::Success(
             [

@@ -20,6 +20,8 @@
  *
  */
 
+declare(strict_types = 1);
+
 namespace Maatify\Model;
 
 abstract class JoinTablesModel_deprecated extends PDOBuilder

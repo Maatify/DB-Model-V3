@@ -20,8 +20,6 @@
  *
  */
 
-declare(strict_types = 1);
-
 namespace Maatify\Model;
 
 use Maatify\Json\Json;

@@ -24,6 +24,7 @@ declare(strict_types = 1);
 namespace Maatify\ModelTwo;
 
 use Exception;
+use Maatify\dbContracts\DBInterface;
 use Maatify\Json\Json;
 use Maatify\Logger\Logger;
 use PDO;
@@ -32,7 +33,7 @@ use PDOException;
 /**
  * @mixin PDO
  */
-class DB
+class DB implements DBInterface
 {
     private PDO $pdo;
     protected string $charset = 'utf8mb4'; // 'utf8', 'utf8_general_ci'

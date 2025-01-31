@@ -23,7 +23,7 @@ declare(strict_types = 1);
 
 namespace Maatify\ModelTwo;
 
-use Maatify\Model\DB;
+use Maatify\dbContracts\DBInterface;
 use Maatify\Json\Json;
 use Maatify\Logger\Logger;
 use PDOException;
@@ -31,7 +31,7 @@ use PDOStatement;
 
 abstract class PDOBuilder
 {
-    protected DB $pdo;
+    protected DBInterface $pdo;
     const TABLE_NAME = 'admin';
     protected string $tableName;
     protected string $tableAlias;

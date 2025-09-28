@@ -61,7 +61,7 @@ class DB implements DBInterface
 //            $this->pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 //            $this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            Logger::RecordLog([$e->getMessage(), (int) $e->getCode(), 'db_connection']);
+            Logger::RecordLog(message: [$e->getMessage(), (int) $e->getCode(), 'db_connection']);
             Json::DbError('DB-' . __LINE__);
         }
     }
@@ -81,7 +81,8 @@ class DB implements DBInterface
         try {
             return call_user_func_array([$this->pdo, $name], $arguments);
         }catch (Exception $exception){
-            Logger::RecordLog($exception, 'db_call_func');
+            Logger::RecordLog(message:$exception,
+                level: 'db_call_func');
         }
         Json::DbError(__LINE__);
         return false;

@@ -44,7 +44,8 @@ abstract class DbConnector extends Model
                 ]);
             }
             catch (PDOException $e){
-                Logger::RecordLog([$e->getMessage(), (int)$e->getCode()], 'app_connections');
+                Logger::RecordLog(message: [$e->getMessage(), (int)$e->getCode()], 
+                logFile: 'app_connections');
                 Json::DbError(__LINE__);
             }
         }

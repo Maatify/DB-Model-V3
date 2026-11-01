@@ -213,7 +213,7 @@ abstract class PDOBuilder
 
     protected function logError(PDOException $e, string $queryString, int $line, array $wheresVal = []): array
     {
-        Logger::RecordLog(['query' => $queryString, 'wheresVal' => $wheresVal, 'line' => $line, 'exception' => $e,], 'db_errors');
+        Logger::RecordLog(message: ['query' => $queryString, 'wheresVal' => $wheresVal, 'line' => $line, 'exception' => $e,], logFile: 'db_errors');
 
         return [];
     }

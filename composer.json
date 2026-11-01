@@ -1,7 +1,6 @@
 {
   "name": "maatify/db-model-v3",
   "description": "Official PHP library for maatify.dev MySql Database Model handler, known by our team",
-  "version": "5.0.2",
   "type": "library",
   "keywords": [
     "PHP",
@@ -47,7 +46,11 @@
   ],
   "require": {
     "ext-pdo": "*",
-    "maatify/post-validator-v2": "^5.0"
+    "maatify/logger": "^5.0 || ^7.0",
+    "maatify/post-validator-v2": "^5.0.2"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9.6 || ^10 || ^11 || ^12"
   },
   "autoload": {
     "psr-4": {
@@ -55,5 +58,14 @@
       "Maatify\\ModelTwo\\": "db-model-two/",
       "Maatify\\DbContracts\\": "dbContracts"
     }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Maatify\\Model\\Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "test": "phpunit",
+    "test:logger-matrix": "bash scripts/verify-logger-matrix.sh"
   }
 }

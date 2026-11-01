@@ -81,8 +81,8 @@ class DB implements DBInterface
         try {
             return call_user_func_array([$this->pdo, $name], $arguments);
         }catch (Exception $exception){
-            Logger::RecordLog(message:$exception,
-                level: 'db_call_func');
+            Logger::RecordLog(message: $exception,
+                logFile: 'db_call_func');
         }
         Json::DbError(__LINE__);
         return false;
